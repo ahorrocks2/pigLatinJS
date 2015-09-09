@@ -1,23 +1,43 @@
 function pigLatin(phrase) {
-  var vowels = ["a", "e", "i", "o", "u"];
-  var splitPhrase = phrase.split("");
-  var beginningConsonants;
-  var stop = false;
+  var words = phrase.split(" ");
+  var translatedSentence = [];
 
-  for(var i = 0; stop === false; i++) {
+  words.forEach(function(word) {
+
+    translatedSentence.push(pigLatinWord(word));
+  });
+
+  return translatedSentence.join(" ");
+};
+
+function pigLatinWord(word) {
+  var vowels = ["a", "e", "i", "o", "u"];
+  var splitWord = word.split("");
+  var beginningConsonants = false;
+
+  if (/[,.?\-!]/.test(splitWord[word.length - 1])) {
+    var lastElement = splitWord.pop();
+  } else {
+    var lastElement = "";
+  }
+
+  for(var i = 0; beginningConsonants === false; i++) {
     vowels.forEach(function(vowel) {
-      if (vowel === phrase[i]) {
-        beginningConsonants = i;
-        stop = true;
+      if (vowel === word[i]) {
+        if (word[i] === "u" && word[i-1] === "q") {
+          beginningConsonants = i+1;
+        } else {
+          beginningConsonants = i;
+        }
       }
     });
   };
 
   if (beginningConsonants === 0) {
-    var translation = phrase + "ay";
+    var translation = word + "ay";
   } else {
-    var firstSegment = splitPhrase.splice(0, beginningConsonants);
-    var translation = splitPhrase.join("") + firstSegment.join("") + "ay";
+    var firstSegment = splitWord.splice(0, beginningConsonants);
+    var translation = splitWord.join("") + firstSegment.join("") + "ay" + lastElement;
   }
 
   return translation;
