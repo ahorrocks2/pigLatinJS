@@ -10,7 +10,6 @@ function pigLatin(phrase) {
 }
 
 function pigLatinWord(word) {
-  var vowels = ["a", "e", "i", "o", "u"];
   var splitWord = word.split("");
   var beginningConsonants = false;
   var lowerCaseWord = word.toLowerCase();
@@ -21,15 +20,13 @@ function pigLatinWord(word) {
   }
 
   for(var i = 0; beginningConsonants === false; i++) {
-    vowels.forEach(function(vowel) {
-      if (vowel === lowerCaseWord[i]) {
-        if (lowerCaseWord[i] === "u" && lowerCaseWord[i-1] === "q") {
-          beginningConsonants = i+1;
-        } else {
-          beginningConsonants = i;
-        }
+    if (/[aeiou]/i.test(lowerCaseWord[i])) {
+      if (lowerCaseWord[i] === "u" && lowerCaseWord[i-1] === "q") {
+        beginningConsonants = i+1;
+      } else {
+        beginningConsonants = i;
       }
-    });
+    }
   };
 
   if (beginningConsonants === 0) {
